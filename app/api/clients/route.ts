@@ -6,18 +6,83 @@ let clients = [
     { id: 3, name: "Wayne Enterprises", contact: "Bruce Wayne", email: "bruce@wayne.com", phone: "+82 10-1111-2222", projects: 2, totalValue: "₩ 22,000,000" },
 ];
 
+let clientIdCounter = 3;
+
+// 입력 검증
+interface CreateClientRequest {
+    name: string;
+    contact: string;
+    email: string;
+    phone: string;
+}
+
+function validateClientInput(body: any): CreateClientRequest | null {
+    if (!body || typeof body !== 'object') return null;
+    if (!body.name || typeof body.name !== 'string' || body.name.trim().length === 0) return null;
+    if (!body.contact || typeof body.contact !== 'string' || body.contact.trim().length === 0) return null;
+    if (!body.email || typeof body.email !== 'string' || !isValidEmail(body.email)) return null;
+    if (!body.phone || typeof body.phone !== 'string') return null;
+
+    return {
+        name: body.name.trim().substring(0, 100),
+        contact: body.contact.trim().substring(0, 50),
+        email: body.email.trim().toLowerCase(),
+        phone: body.phone.trim()
+    };
+}
+
+function isValidEmail(email: string): boolean {
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    return emailRegex.test(email);
+}
+
 export async function GET() {
-    return NextResponse.json(clients);
+    try {
+        return NextResponse.json(clients);
+    } catch (error) {
+        console.error('[GET /api/clients]', error);
+        return NextResponse.json(
+            { error: 'Failed to fetch clients' },
+            { status: 500 }
+        );
+    }
 }
 
 export async function POST(request: Request) {
-    const body = await request.json();
-    const newClient = {
-        id: clients.length + 1,
-        ...body,
-        projects: 0,
-        totalValue: "₩ 0"
-    };
-    clients.push(newClient);
-    return NextResponse.json(newClient, { status: 201 });
+    try {
+        const body = await request.json();
+        const validated = validateClientInput(body);
+
+        if (!validated) {
+            return NextResponse.json(
+                { error: 'Invalid input data. Required fields: name, contact, email (valid format), phone' },
+                { status: 400 }
+            );
+        }
+
+        const newClient = {
+            id: ++clientIdCounter,
+            ...validated,
+            projects: 0,
+            totalValue: "₩ 0"
+        };
+
+        clients.push(newClient);
+        return NextResponse.json(newClient, { status: 201 });
+
+    } catch (error) {
+        console.error('[POST /api/clients]', error);
+
+        if (error instanceof SyntaxError) {
+            return NextResponse.json(
+                { error: 'Invalid JSON format' },
+                { status: 400 }
+            );
+        }
+
+        return NextResponse.json(
+            { error: 'Failed to create client' },
+            { status: 500 }
+        );
+    }
 }

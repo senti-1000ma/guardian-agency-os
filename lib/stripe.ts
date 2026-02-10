@@ -19,7 +19,10 @@ export const tossConfig = {
 export async function createTossPayment(amount: number, orderId: string, orderName: string) {
     // Toss Payments API 호출 로직
     // 추후 구현 예정
-    console.log('Toss Payments integration coming soon...');
+    // Toss Payments integration placeholder
+    if (process.env.NODE_ENV !== 'production') {
+      console.log('[INFO] Toss Payments integration coming soon...');
+    }
 }
 */
 
