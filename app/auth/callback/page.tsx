@@ -2,13 +2,23 @@
 
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { supabase } from '@/lib/supabase';
+import { supabase, isSupabaseConfigured } from '@/lib/supabase';
+
+// Force dynamic rendering to prevent build-time errors
+export const dynamic = 'force-dynamic';
 
 export default function AuthCallbackPage() {
     const router = useRouter();
 
     useEffect(() => {
         const handleAuthCallback = async () => {
+            // Supabase가 설정되지 않은 경우
+            if (!isSupabaseConfigured()) {
+                console.warn('Supabase is not configured. Redirecting to login.');
+                router.push('/login?error=supabase_not_configured');
+                return;
+            }
+
             const { data, error } = await supabase.auth.getSession();
 
             if (error) {

@@ -1,10 +1,18 @@
 import { createClient } from '@supabase/supabase-js';
 
-const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL!;
-const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY!;
+// Supabase 환경 변수 (나중에 설정 가능하도록 기본값 제공)
+const supabaseUrl = process.env.NEXT_PUBLIC_SUPABASE_URL || 'https://placeholder.supabase.co';
+const supabaseAnonKey = process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || 'placeholder-key';
 
 // Browser client
 export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+
+// Helper function to check if Supabase is properly configured
+export const isSupabaseConfigured = () => {
+    return process.env.NEXT_PUBLIC_SUPABASE_URL &&
+        process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY &&
+        process.env.NEXT_PUBLIC_SUPABASE_URL !== 'https://placeholder.supabase.co';
+};
 
 // Type definitions
 export type Profile = {
