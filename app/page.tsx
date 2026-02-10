@@ -4,6 +4,7 @@ import { motion } from "framer-motion";
 import { Shield, MessageSquare, Lock, Globe, CheckCircle, ArrowRight, Zap, Layout, CreditCard, Users } from "lucide-react";
 import Link from "next/link";
 
+import { LiveDemo } from "@/components/landing/LiveDemo";
 export default function Home() {
   return (
     <div className="min-h-screen bg-slate-950 text-slate-50 font-sans selection:bg-cyan-500/30">
@@ -70,9 +71,7 @@ export default function Home() {
               </button>
             </div>
 
-            import {LiveDemo} from "@/components/landing/LiveDemo";
 
-            // ... inside the component
             {/* Dashboard Live Demo */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
