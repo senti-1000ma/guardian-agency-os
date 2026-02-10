@@ -70,26 +70,17 @@ export default function Home() {
               </button>
             </div>
 
-            {/* Dashboard Preview Mockup */}
+            import {LiveDemo} from "@/components/landing/LiveDemo";
+
+            // ... inside the component
+            {/* Dashboard Live Demo */}
             <motion.div
               initial={{ opacity: 0, y: 40 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.3, duration: 0.7 }}
-              className="mt-20 relative mx-auto max-w-5xl rounded-xl border border-slate-800 bg-slate-900/50 backdrop-blur shadow-2xl overflow-hidden"
+              className="mt-20 mx-auto max-w-5xl"
             >
-              <div className="absolute top-0 w-full h-px bg-gradient-to-r from-transparent via-cyan-500/50 to-transparent" />
-              <div className="p-4 border-b border-slate-800 flex gap-2">
-                <div className="w-3 h-3 rounded-full bg-slate-700" />
-                <div className="w-3 h-3 rounded-full bg-slate-700" />
-                <div className="w-3 h-3 rounded-full bg-slate-700" />
-              </div>
-              <div className="aspect-[16/9] bg-slate-900 flex items-center justify-center text-slate-600">
-                {/* Placeholder for Dashboard Image */}
-                <div className="text-center">
-                  <Layout className="w-16 h-16 mx-auto mb-4 opacity-50" />
-                  <p>Guardian Dashboard Preview</p>
-                </div>
-              </div>
+              <LiveDemo />
             </motion.div>
           </motion.div>
         </div>
